@@ -1,3 +1,80 @@
+/* General Styles */
+
+* {
+    align-items: center;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 180px;
+    height: 180px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 40px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+/* NAV BAR STYLES */
+
+nav {
+    width: 100%;
+    padding: 16px 24px;
+    margin-bottom: 40px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+/* Section Styles */
+
+/* Comum hatch section */
+
+body > section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    margin-bottom: 40px;
+}
+
+body > section > button {
+    width: 180px;
+    height: 180px;
+    /*border-radius: 50%;*/
+}
+
+/* Special Ants Styles */
+.special_ants {
+    display: grid;
+    grid-template-columns: repeat(3, 220px);
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+/*Return home link styles*/
+a {
+    font-weight: bold;
+    text-decoration: none;
 .special_ants {
     display: flex;
     justify-content: center;
