@@ -4,12 +4,13 @@
         <meta charset="UTF-8">
         <title>Ant Clicker</title>
         <link rel="stylesheet" href="style.css">
+        <script type="module" src="../js/game_logic/main_loop.js" defer></script>
     </head>
     <body>
         <nav>
             <ul>
-                <span>Username: </span>
-                <span>Ants: 0</span>
+                <span id="username_display">Username: </span>
+                <span id="ant_count">Ants: 0</span>
                 <span>Rank: 0</span> <!--rank-->
             </ul>
         </nav>
@@ -28,7 +29,7 @@
             <section id="queen_ant">
                 <button id="queen_ant_button">hatch Queen</button>
                 <p> hatch Queen</p>
-                <p> 50$ | 0</p> <!--switch to image -->
+                <p id="queen_price"> 50$ | 0</p> <!--switch to image -->
             </section>
             <section id="soldier_ant">
                 <button id="soldier_ant_button">hatch Soldier</button>

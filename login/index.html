@@ -8,12 +8,29 @@
     <body class="sec_center">
         <h1>Ant Clicker</h1>
         <p><i>A game about ants</i></p>
+
         <div>
-            <input type="text" id="username" placeholder="Username">
-            <input type="password" id="password" placeholder="Password">
-            <button id="loginButton">Login</button>
-        </div> 
+            <input
+                type="text"
+                id="username"
+                placeholder="Username"
+                required
+            >
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                required
+            >
+
+            <button id="login_button">Login</button>
+        </div>
+
+        <p id="login_message"></p>
+
         <a href="../index.html">Back to Home</a>
+
+        <script type="module" src="js/login.js"></script>
     </body>
 </html>
-<!-- Here, he can login to his account , that is already saved on databank-->
