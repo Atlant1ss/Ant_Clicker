@@ -1,46 +1,68 @@
+
 <?php
-
-$conn = mysqli_connect("localhost", "root", "", "ant_clicker");
-
-
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
-mysqli_set_charset($conn, "utf8mb4");
 
 session_start();
 
 header("Content-Type: application/json; charset=utf-8");
 
-if (!isset($_SESSION['user_id'])) {
+$conn = mysqli_connect("localhost", "root", "", "ant_clicker");
+
+if (!$conn) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Database connection failed."
+    ]);
+    exit();
+}
+
+mysqli_set_charset($conn, "utf8mb4");
+
+if (!isset($_SESSION["user_id"])) {
     http_response_code(401);
-    echo json_encode(["success" => false, "message" => "Unauthorized"]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Unauthorized."
+    ]);
+    mysqli_close($conn);
     exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(405);
-
     echo json_encode([
         "success" => false,
         "message" => "Method not allowed."
     ]);
-
-    exit;
+    mysqli_close($conn);
+    exit();
 }
 
 $data = json_decode(file_get_contents("php://input"), true);
 
 if (!is_array($data)) {
     http_response_code(400);
-    echo json_encode(["success" => false, "message" => "Invalid JSON data."]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Invalid JSON data."
+    ]);
+    mysqli_close($conn);
     exit();
 }
 
-if (!isset($data['cur_ants']) || !isset($data['ants_count']) || !is_array($data['ants_count'])) {
+$cur_ants = $data["cur_ants"] ?? null;
+$ants_count = $data["ants_count"] ?? null;
+
+if (
+    !(is_int($cur_ants) || (is_string($cur_ants) && ctype_digit($cur_ants))) ||
+    !is_array($ants_count)
+) {
     http_response_code(400);
-    echo json_encode(["success" => false, "message" => "Missing required fields."]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Missing or invalid required fields."
+    ]);
+    mysqli_close($conn);
     exit();
 }
 
@@ -53,35 +75,28 @@ $ant_types = [
     "corporate"
 ];
 
-if (!(is_int($cur_ants) || is_string($cur_ants)) || !preg_match('/^\d+$/', (string) $cur_ants)) {
-    http_response_code(400);
-
-    echo json_encode([
-        "success" => false,
-        "message" => "Invalid ant balance."
-    ]);
-
-    exit;
-}
-
 foreach ($ant_types as $type) {
-    if (!isset($ants_count[$type]) || !is_int($ants_count[$type]) || $ants_count[$type] < 0) {
+    if (
+        !isset($ants_count[$type]) ||
+        !is_int($ants_count[$type]) ||
+        $ants_count[$type] < 0
+    ) {
         http_response_code(400);
-
         echo json_encode([
             "success" => false,
             "message" => "Invalid ant inventory."
         ]);
-
-        exit;
+        mysqli_close($conn);
+        exit();
     }
 }
 
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION["user_id"];
 
 try {
     mysqli_begin_transaction($conn);
 
+    // Save current balance and update personal record.
     $stmt = mysqli_prepare(
         $conn,
         "INSERT INTO game_states (user_id, cur_ants, score)
@@ -90,12 +105,19 @@ try {
             cur_ants = VALUES(cur_ants),
             score = GREATEST(score, VALUES(cur_ants))"
     );
-    
-    mysqli_stmt_bind_param($stmt, "iss", $user_id, $cur_ants, $cur_ants);
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "iss",
+        $user_id,
+        $cur_ants,
+        $cur_ants
+    );
 
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 
+    // Retrieve game state ID.
     $stmt = mysqli_prepare(
         $conn,
         "SELECT id FROM game_states WHERE user_id = ?"
@@ -109,12 +131,18 @@ try {
 
     mysqli_stmt_close($stmt);
 
+    if (!$game_state_id) {
+        throw new Exception("Game state not found.");
+    }
+
+    // Save each ant quantity.
     $stmt = mysqli_prepare(
         $conn,
         "INSERT INTO ant_inventory
             (game_state_id, ant_type, quantity)
          VALUES (?, ?, ?)
-         ON DUPLICATE KEY UPDATE quantity = VALUES(quantity)"
+         ON DUPLICATE KEY UPDATE
+            quantity = VALUES(quantity)"
     );
 
     foreach ($ant_types as $type) {
@@ -154,4 +182,5 @@ try {
 }
 
 mysqli_close($conn);
+
 ?>

@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ant Clicker - Account</title>
+        <link rel="stylesheet" href="../style.css">
+        <script src="../js/auth/delete_account.js" defer></script>
+    </head>
+    <body>
+        <h1>Account Settings</h1>
+
+        <section>
+            <h2>Delete Account</h2>
+
+            <p>
+                This action is permanent. Your account and game progress
+                will be deleted.
+            </p>
+
+            <form id="delete_account_form">
+                <label for="password">Enter your password:</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                >
+
+                <button type="submit">
+                    Delete Account
+                </button>
+            </form>
+
+            <p id="delete_message"></p>
+        </section>
+
+        <a href="../jogo/">Back to Game</a>
+    </body>
+</html>

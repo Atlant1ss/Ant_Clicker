@@ -73,11 +73,10 @@ try {
     $_SESSION["user_id"] = $user["id"];
     $_SESSION["username"] = $username;
 
-    localStorage.setItem("username", $username);
-
     echo json_encode([
         "success" => true,
-        "message" => "Login successful."
+        "message" => "Login successful.",
+        "username" => $username
     ]);
 
 } catch (Throwable $error) {

@@ -17,40 +17,43 @@
         <section>
             <button id="comum_ant_button"><span class="emoji">🐜</span> hatch ant</button> 
             <p>hatch ant</p>
-            <p> 0 </p><!--switch to image -->
+            <p id="comum_price"> 0 </p><!--switch to image -->
         </section>
         <h2>Special Ants</h2>
         <div class="special_ants">
             <section id="worker_ant">
-                <button id="worker_ant_button"><span class="emoji"></span> hatch Worker</button>
+                <button id="worker_ant_button" title="Generates 1 ant per second."><span class="emoji"></span> hatch Worker</button>
                 <p> hatch Worker</p>
-                <p> 10$ | 0</p> <!--switch to image -->
+                <p id="worker_price"> 10$ | 0</p> <!--switch to image -->
             </section>
             <section id="queen_ant">
-                <button id="queen_ant_button">hatch Queen</button>
+                <button id="queen_ant_button" title="Increases your click strength by 1.">hatch Queen</button>
                 <p> hatch Queen</p>
                 <p id="queen_price"> 50$ | 0</p> <!--switch to image -->
             </section>
             <section id="soldier_ant">
-                <button id="soldier_ant_button">hatch Soldier</button>
+                <button id="soldier_ant_button" title="Increases your critical hit chance and critical damage multiplier.">hatch Soldier</button>
                 <p> hatch Soldier</p>
-                <p> 100$ | 0</p> <!--switch to image -->
+                <p id="soldier_price"> 100$ | 0</p> <!--switch to image -->
             </section>
             <section id="explorer_ant">
-                <button id="explorer_ant_button">hatch Explorer</button>
+                <button id="explorer_ant_button" title="Randomly spawns a sugar lump on the screen. Click it for a temporary buff.">hatch Explorer</button>
                 <p> hatch Explorer </p>
-                <p> 200$ | 0</p> <!--switch to image -->
+                <p id="explorer_price"> 200$ | 0</p> <!--switch to image -->
             </section>
             <section id="witch_ant">
-                <button id="witch_ant_button">hatch Witch</button>
+                <button id="witch_ant_button" title="Increases the efficiency of your other ants by a percentage.">hatch Witch</button>
                 <p> hatch Witch</p>
-                <p> 500$ | 0</p> <!--switch to image -->
+                <p id="witch_price"> 500$ | 0</p> <!--switch to image -->
             </section>
             <section id="corporate_ant">
-                <button id="corporate_ant_button">hatch Corporate</button>
+                <button id="corporate_ant_button" title="Earns interest based on the number of ants you currently have stored.">hatch Corporate</button>
                 <p> hatch Corporate</p>
-                <p> 1000$ | 0</p> <!--switch to image -->
+                <p id="corporate_price"> 1000$ | 0</p> <!--switch to image -->
             </section>
         </div> 
+
+        <button type="button" style="position: fixed; right: 16px; bottom: 16px; width: 90px; height: 28px;" id="save_game_button">save game</button>
+
         <a href="../index.html">Back to Home</a>
     </body>
