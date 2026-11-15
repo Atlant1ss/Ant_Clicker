@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ant Clicker - Register</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="../js/auth/register.js" defer></script>
+    </head>
+    <body class="sec_center">
+        <h1>Ant Clicker</h1>
+
+        <form id="register_form">
+            <label for="username">Username:</label>
+            <input
+                type="text"
+                id="username"
+                name="username"
+                minlength="3"
+                maxlength="30"
+                required
+            >
+
+            <label for="email">Email:</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                maxlength="255"
+                required
+            >
+
+            <label for="password">Password:</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                minlength="8"
+                required
+            >
+
+            <button type="submit">Register</button>
+        </form>
+
+        <p id="register_message"></p>
+
+        <a href="../index.html">Back to Home</a>
+    </body>
+</html>

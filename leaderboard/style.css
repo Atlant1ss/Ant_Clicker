@@ -1,0 +1,54 @@
+.sec_center{
+    font-size: 25px;
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    text-align: center;
+}
+
+/*for link*/
+a,
+a:link,
+a:visited,
+a:hover,
+a:active,
+a:focus {
+    font-weight: bold;
+    text-decoration: none;
+    color:black;
+}
+
+/*for the table*/
+table {
+    width: 100%;
+    margin: 30px auto;
+    border-collapse: collapse;
+    font-size: 22px;
+}
+
+th,
+td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #ccc;
+}
+
+thead th {
+    border-bottom: 2px solid #333;
+}
+
+/*for the first, second and third place*/
+tbody tr:nth-child(1) td:not([colspan]) {
+    background-color: #ffd700;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(2) td:not([colspan]) {
+    background-color: #c0c0c0;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(3) td:not([colspan]) {
+    background-color: #cd7f32;
+    font-weight: bold;
+}
