@@ -15,7 +15,7 @@ register_form.addEventListener("submit", async (event) => {
     register_message.textContent = "Registering...";
 
     try {
-        let response = await fetch("../api/register/", {
+        let response = await fetch("../../api/register/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
