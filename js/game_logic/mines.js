@@ -6,6 +6,7 @@ const player_balance = document.getElementById("player_balance");
 const current_multiplier = document.getElementById("current_multiplier");
 const potential_prize = document.getElementById("potential_prize");
 
+const sync_balance_button = document.getElementById("sync_balance_button");
 const start_game_button = document.getElementById("start_game_button");
 const cash_out_button = document.getElementById("cash_out_button");
 const game_message = document.getElementById("game_message");
@@ -16,11 +17,11 @@ let safe_count = 0;
 let revealed_cells = [];
 let game_buttons = [];
 
-function update_balance(balance) {
+function update_balance(balance, notify_parent = true) {
     player_balance.textContent =
         `${Number(balance).toLocaleString("pt-BR")} formigas`;
 
-    if (window.parent !== window) {
+    if (notify_parent && window.parent !== window) {
         window.parent.postMessage({
             type: "mines_balance_update",
             balance: String(balance)
@@ -43,6 +44,7 @@ function set_message(message) {
 function set_loading(loading) {
     game_loading = loading;
 
+    sync_balance_button.disabled = loading;
     start_game_button.disabled = loading || game_active;
 
     cash_out_button.disabled =
@@ -54,6 +56,44 @@ function set_loading(loading) {
             !game_active ||
             button.dataset.revealed === "true";
     });
+}
+
+async function sync_balance_from_server() {
+    set_loading(true);
+    set_message("Synchronizing balance...");
+
+    try {
+        const result = await api_request({
+            action: "status"
+        });
+
+        update_balance(result.balance, false);
+        set_message("Balance synchronized.");
+
+    } catch (error) {
+        set_message(error.message);
+    } finally {
+        set_loading(false);
+    }
+}
+
+function sync_balance() {
+    if (game_loading) {
+        return;
+    }
+
+    if (window.parent !== window) {
+        set_loading(true);
+        set_message("Synchronizing balance...");
+
+        window.parent.postMessage({
+            type: "mines_balance_sync_request"
+        }, window.location.origin);
+
+        return;
+    }
+
+    sync_balance_from_server();
 }
 
 async function api_request(data) {
@@ -80,6 +120,26 @@ async function api_request(data) {
 
     return result;
 }
+
+window.addEventListener("message", (event) => {
+    if (
+        event.origin !== window.location.origin ||
+        event.source !== window.parent ||
+        event.data?.type !== "mines_balance_sync_response"
+    ) {
+        return;
+    }
+
+    set_loading(false);
+
+    if (!event.data.success) {
+        set_message(event.data.message || "Could not synchronize balance.");
+        return;
+    }
+
+    update_balance(event.data.balance);
+    set_message("Balance synchronized.");
+});
 
 function create_board() {
     mines_board.innerHTML = "";
@@ -307,7 +367,7 @@ async function restore_game() {
             action: "status"
         });
 
-        update_balance(result.balance);
+        update_balance(result.balance, false);
 
         if (result.game) {
             safe_count = Number(result.game.safe_count);
@@ -342,6 +402,7 @@ async function restore_game() {
 
 start_game_button.addEventListener("click", start_game);
 cash_out_button.addEventListener("click", cash_out);
+sync_balance_button.addEventListener("click", sync_balance);
 
 create_board();
 restore_game();

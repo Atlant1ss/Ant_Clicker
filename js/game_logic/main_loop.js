@@ -27,7 +27,7 @@ function update_ant_balance() {
         `Ants: ${cur_ants}`;
 }
 
-window.addEventListener("message", (event) => {
+window.addEventListener("message", async (event) => {
     if (event.origin !== window.location.origin) {
         return;
     }
@@ -35,6 +35,21 @@ window.addEventListener("message", (event) => {
     const las_vegas_frame = document.getElementById("las_vegas_frame");
 
     if ( !las_vegas_frame || event.source !== las_vegas_frame.contentWindow) {
+        return;
+    }
+
+    if (event.data?.type === "mines_balance_sync_request") {
+        const saved = await save_game_state(cur_ants, ants_count);
+
+        event.source.postMessage({
+            type: "mines_balance_sync_response",
+            success: saved,
+            balance: String(cur_ants),
+            message: saved
+                ? "Balance synchronized."
+                : "Could not save the current balance."
+        }, window.location.origin);
+
         return;
     }
 
