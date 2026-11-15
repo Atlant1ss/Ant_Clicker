@@ -75,6 +75,8 @@ body > section > button {
 a {
     font-weight: bold;
     text-decoration: none;
+}
+
 .special_ants {
     display: flex;
     justify-content: center;
