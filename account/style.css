@@ -1,3 +1,7 @@
+* {
+    font-family: "poppins", sans-serif;
+}
+
 .sec_center{
     font-size: 25px;
     width: 50%;
@@ -6,6 +10,8 @@
     margin-bottom: 100px;
     text-align: center;
 }
+
+/*link*/
 
 a{
     font-weight: bold;
