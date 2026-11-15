@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 * {
     font-family: "poppins", sans-serif;
 }
 
+=======
+>>>>>>> origin/main
 .sec_center{
     font-size: 25px;
     width: 50%;
@@ -11,8 +14,11 @@
     text-align: center;
 }
 
+<<<<<<< HEAD
 /*link*/
 
+=======
+>>>>>>> origin/main
 a{
     font-weight: bold;
     text-decoration: none;
