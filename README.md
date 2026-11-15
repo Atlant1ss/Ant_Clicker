@@ -3,7 +3,12 @@ A website game where you acquire ants by clicking on the main ant so you can buy
 
 # Main Page
 
+<p align="center">
+  <img src="img/Main_Page.png">
+</p>
+
 It shows the few brief functionalities the game have, being:
+
 | | |
 |---|---|
 | **Register** | Creates a new account accourding to the username, email and password. Those are going to be used to save your progress |
@@ -12,15 +17,26 @@ It shows the few brief functionalities the game have, being:
 | **Leaderboard** | Using the accounts who saved their games, there is this leaderboard showing your progress, rank and username so you can compare to other players |
 | **Account**  | If the account is not with the username you wanted you can go and delete it with the password, confirming its you who is deleting |
 
+---
+
 # Game System
+<p align="center">
+  <img src="img/Hatch_Ant.png">
+</p>
 
 By pressing the button **play**, its going to redirect you to the most exciting gameplay ever made!
 
-PRESS BUTTTON TO HATCH ANTS → BUY SPECIAL ANTS → HATCH MORE ANTS
+**PRESS BUTTTON TO HATCH ANTS → BUY SPECIAL ANTS → HATCH MORE ANTS**
 
 (I know, insane right?)
 
+---
+
 # Special Ants
+
+<p align="center">
+  <img src="img/Special_Ants.png">
+</p>
 
 The special ants changes the way you play your game and the amount of ants you recieve. Of course they are not so easy to obtain, everything has a cost.
 (you can also see what hatching each ant does by passing the cursor through the button)
@@ -36,6 +52,17 @@ The special ants changes the way you play your game and the amount of ants you r
 
 # LAS VEGAS BABY!!!!
 
+<p align="center">
+  <img src="img/LV_Baby.png">
+</p>
+
 We are happy to introduce you to a LAS VEGAS side drawer
+
+<p align="center">
+  <img src="img/Gambling_Drawer.png">
+</p>
+
 ---
-On it, you can now bet your ants on a mine betting game, **find the gems and avoid the mines!**
+
+On it, you can now bet your ants on a mine betting game, find the gems and avoid the mines!
+**Gambling Time!**
