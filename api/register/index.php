@@ -7,6 +7,8 @@ header("Content-Type: application/json; charset=UTF-8");
 
 $conn = mysqli_connect("localhost", "root", "", "ant_clicker");
 
+//$conn = mysqli_connect("127.0.0.1", "root", "", "ant_clicker", 3306);
+
 if (!$conn) {
     http_response_code(500);
     echo json_encode([
@@ -14,9 +16,8 @@ if (!$conn) {
         "message" => "Database connection failed."
     ]);
     exit();
-}
+} 
 
-mysqli_set_charset($conn, "utf8mb4");
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(405);
@@ -172,7 +173,7 @@ try {
 
     mysqli_rollback($conn);
 
-    error_log($error->getMessage());
+    echo $error->getMessage();
 
     if (
         $error instanceof mysqli_sql_exception &&

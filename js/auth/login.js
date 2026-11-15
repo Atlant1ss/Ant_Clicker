@@ -15,7 +15,7 @@ login_button.addEventListener("click", async () => {
     login_message.textContent = "Logging in...";
 
     try {
-        let response = await fetch("../api/login/", {
+        let response = await fetch("../../api/login/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
