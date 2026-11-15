@@ -1,10 +1,15 @@
-
 import buy_ant, { update_ant_display } from "./buy_ants.js";
 import save_game_state from "./game_state/save_game.js";
 import load_game_state from "./game_state/load_game.js";
 import { get_crit_chance, get_crit_multiplier } from "./ants/soldier.js";
+import { start_explorer } from "./ants/explorer.js";
+import { get_witch_multiplier } from "./ants/witch.js";
+import { start_corporate } from "./ants/corporate.js";
+import { show_notification } from "./notifications.js";
 
 let cur_ants = 0;
+let click_multiplier = 1;
+let click_buff_timeout = null;
 
 let ants_count = {
     worker: 0,
@@ -22,18 +27,89 @@ function update_ant_balance() {
         `Ants: ${cur_ants}`;
 }
 
+window.addEventListener("message", (event) => {
+    if (event.origin !== window.location.origin) {
+        return;
+    }
+
+    const las_vegas_frame = document.getElementById("las_vegas_frame");
+
+    if ( !las_vegas_frame || event.source !== las_vegas_frame.contentWindow) {
+        return;
+    }
+
+    if (event.data?.type !== "mines_balance_update") {
+        return;
+    }
+
+    const new_balance = event.data.balance;
+
+    if (!/^\d+$/.test(new_balance)) {
+        return;
+    }
+
+    cur_ants = Number(new_balance);
+    update_ant_balance();
+});
+
 function update_all_ant_displays() {
     for (const type in ants_count) {
         update_ant_display(type, ants_count);
     }
 }
 
+function activate_click_buff() {
+    const explorer_count = ants_count.explorer;
+
+    click_multiplier = Math.min(
+        1 + Math.floor(Math.sqrt(explorer_count)),
+        10
+    );
+
+    const buff_duration = Math.min(
+        15 + Math.floor(Math.sqrt(Math.max(0, explorer_count - 1))) * 2,
+        30
+    );
+
+    if (click_buff_timeout !== null) {
+        clearTimeout(click_buff_timeout);
+    }
+
+    let buff_display = document.getElementById("click_buff_display");
+
+    if (!buff_display) {
+        buff_display = document.createElement("div");
+        buff_display.id = "click_buff_display";
+        buff_display.className = "click_buff_display";
+        document.body.appendChild(buff_display);
+    }
+
+    buff_display.textContent =
+        `Sugar Rush! Clique ${click_multiplier}x por ${buff_duration} segundos!`;
+
+    buff_display.hidden = false;
+
+    click_buff_timeout = setTimeout(() => {
+        click_multiplier = 1;
+        buff_display.hidden = true;
+        click_buff_timeout = null;
+
+        console.log("Click buff expired!");
+    }, buff_duration * 1000);
+
+    console.log(
+        `Sugar Rush activated! ${click_multiplier}x for ${buff_duration}s`
+    );
+}
+
+
 function hatch() {
-    const base_gain = 1 + ants_count.queen;
+    const witch_multiplier = get_witch_multiplier(ants_count.witch);
 
-    const crit_chance = get_crit_chance(ants_count.soldier);
-    const crit_multiplier = get_crit_multiplier(ants_count.soldier);
+    const base_gain = Math.floor((1 + ants_count.queen * witch_multiplier) * click_multiplier);
 
+    const crit_chance = get_crit_chance(ants_count.soldier, witch_multiplier);
+    const crit_multiplier = get_crit_multiplier(ants_count.soldier, witch_multiplier);
     const is_crit = Math.random() < crit_chance;
 
     const gain = is_crit ? Math.floor(base_gain * crit_multiplier) : base_gain;
@@ -43,6 +119,8 @@ function hatch() {
     update_ant_balance();
 
     if (is_crit) {
+        show_notification(`CRÍTICO! +${gain} formigas!`, "critical");
+
         console.log(`CRITICAL! +${gain} ants!`);
     }
 
@@ -126,6 +204,12 @@ async function initialize_game() {
     }
 
     game_initialized = true;
+    start_explorer(ants_count, activate_click_buff, () => get_witch_multiplier(ants_count.witch));
+    start_corporate(ants_count, () => cur_ants, (amount) => {
+        cur_ants += amount;
+        update_ant_balance();
+    }
+);
 
     console.log("Game initialized successfully!");
 
@@ -135,7 +219,9 @@ async function initialize_game() {
 initialize_game();
 
 function worker_production() {
-    cur_ants += ants_count.worker;
+    const witch_multiplier = get_witch_multiplier(ants_count.witch);
+
+    cur_ants += Math.floor(ants_count.worker * witch_multiplier);
 
     update_ant_balance();
 

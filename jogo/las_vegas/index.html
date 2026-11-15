@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ant Clicker - Mines</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="../../js/game_logic/mines.js" defer></script>
+</head>
+<body>
+    <main class="mines_game">
+        <h2>🐜 Formigueiro Las Vegas</h2>
+        <h3>💣 Mines</h3>
+
+        <p>Find the gems and avoid the mines!</p>
+
+        <div class="game_info">
+            <div>
+                <p>Balance</p>
+                <strong id="player_balance">Loading...</strong>
+            </div>
+
+            <div>
+                <p>Multiplier</p>
+                <strong id="current_multiplier">1.00x</strong>
+            </div>
+        </div>
+
+        <div class="bet_controls">
+            <label for="bet_amount">Bet amount:</label>
+            <input
+                type="number"
+                id="bet_amount"
+                min="1"
+                step="1"
+                placeholder="Ants to bet"
+            >
+
+            <label for="mine_count">Number of mines:</label>
+            <select id="mine_count">
+                <option value="1">1 mine</option>
+                <option value="2">2 mines</option>
+                <option value="3">3 mines</option>
+                <option value="5" selected>5 mines</option>
+                <option value="8">8 mines</option>
+                <option value="10">10 mines</option>
+                <option value="15">15 mines</option>
+                <option value="20">20 mines</option>
+                <option value="24">24 mines</option>
+            </select>
+
+            <button id="start_game_button" type="button">
+                Start game
+            </button>
+        </div>
+
+        <div class="mines_board" id="mines_board"></div>
+
+        <div class="game_actions">
+            <p>
+                Potential prize:
+                <strong id="potential_prize">0 ants</strong>
+            </p>
+
+            <button id="cash_out_button" type="button" disabled>
+                Cash out
+            </button>
+        </div>
+
+        <p id="game_message">
+            Choose your bet and start playing!
+        </p>
+    </main>
+</body>
+</html>
